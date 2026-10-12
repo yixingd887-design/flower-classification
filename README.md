@@ -246,6 +246,31 @@ python src/predict.py
 预测类别: roses
 
 置信度: 86.66%
+## 运行方法
+
+### 1. 训练模型
+
+python src/train.py
+
+训练完成后会在 models 目录生成最佳模型。
+
+
+### 2. 模型评估
+
+python src/evaluate.py
+
+输出：
+
+- 总体准确率
+- 各类别准确率
+- 混淆矩阵图片
+
+
+### 3. 图片预测
+
+python src/predict.py
+
+输入花卉图片后，模型会输出预测类别和预测置信度。
 ## 技术栈
 
 - Python
