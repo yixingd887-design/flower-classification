@@ -2,6 +2,8 @@ from pathlib import Path
 
 import torch
 import torch.nn as nn
+import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 
@@ -77,6 +79,10 @@ class_correct = [0] * len(classes)
 class_total = [0] * len(classes)
 
 
+all_labels = []
+all_predictions = []
+
+
 with torch.no_grad():
 
     for images, labels in loader:
@@ -88,6 +94,9 @@ with torch.no_grad():
         outputs = model(images)
 
         _, predicted = torch.max(outputs, 1)
+
+        all_labels.extend(labels.cpu().numpy())
+        all_predictions.extend(predicted.cpu().numpy())
 
 
         total += labels.size(0)
@@ -126,3 +135,59 @@ for i, name in enumerate(classes):
     print(
         f"{name}: {acc:.2f}%"
     )
+
+    # 生成混淆矩阵
+
+cm = confusion_matrix(
+    all_labels,
+    all_predictions
+)
+
+
+plt.figure(figsize=(7, 6))
+
+plt.imshow(cm)
+
+plt.title("Confusion Matrix")
+
+plt.xlabel("Predicted")
+
+plt.ylabel("True")
+
+
+plt.xticks(
+    range(len(classes)),
+    classes,
+    rotation=45
+)
+
+plt.yticks(
+    range(len(classes)),
+    classes
+)
+
+
+for i in range(len(classes)):
+    for j in range(len(classes)):
+        plt.text(
+            j,
+            i,
+            cm[i, j],
+            ha="center",
+            va="center"
+        )
+
+
+plt.tight_layout()
+
+
+save_path = PROJECT_DIR / "results" / "confusion_matrix.png"
+
+
+plt.savefig(save_path)
+
+
+print()
+
+print("混淆矩阵已保存:")
+print(save_path)

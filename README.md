@@ -217,6 +217,10 @@ Loss计算
 
 ![Accuracy Curve](results/accuracy_curve.png)
 
+### Confusion Matrix
+
+![Confusion Matrix](results/confusion_matrix.png)
+
 模型参数量：
 
 695973
